@@ -40,18 +40,15 @@ io.on("connection", (socket) => {
     socket.emit("load-document", document.data);
 
     socket.on("send-changes", (delta) => {
-      // broadcast to others in same document room
       socket.broadcast.to(documentId).emit("receive-changes", delta);
     });
 
     socket.on("save-document", async (data) => {
-      // simple save - you may want to add validation, rate limiting, etc.
       await Document.findByIdAndUpdate(documentId, { data });
     });
   });
 
   socket.on("disconnect", () => {
-    // optional cleanup
   });
 });
 
