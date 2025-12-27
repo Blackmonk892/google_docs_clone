@@ -23,14 +23,14 @@ export default function TextEditor() {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
 
-  // connect to backend socket
+
   useEffect(() => {
     const s = io("http://localhost:3000");
     setSocket(s);
     return () => s.disconnect();
   }, []);
 
-  // load document
+
   useEffect(() => {
     if (!socket || !quill) return;
 
@@ -42,7 +42,7 @@ export default function TextEditor() {
     socket.emit("get-document", documentId);
   }, [socket, quill, documentId]);
 
-  // save document every 2s
+
   useEffect(() => {
     if (!socket || !quill) return;
 
@@ -53,7 +53,7 @@ export default function TextEditor() {
     return () => clearInterval(interval);
   }, [socket, quill]);
 
-  // receive changes from others
+ 
   useEffect(() => {
     if (!socket || !quill) return;
 
@@ -65,7 +65,6 @@ export default function TextEditor() {
     return () => socket.off("receive-changes", handler);
   }, [socket, quill]);
 
-  // send user changes
   useEffect(() => {
     if (!socket || !quill) return;
 
@@ -78,7 +77,6 @@ export default function TextEditor() {
     return () => quill.off("text-change", handler);
   }, [socket, quill]);
 
-  // initialize quill editor
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
     wrapper.innerHTML = "";
